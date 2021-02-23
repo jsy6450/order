@@ -27,7 +27,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - mvn package -Dmaven.test.skip=true
+      - cd $_PROJECT_NAME && mvn package -Dmaven.test.skip=true
       - docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$_PROJECT_NAME:$CODEBUILD_RESOLVED_SOURCE_VERSION  .
   post_build:
     commands:
@@ -44,6 +44,7 @@ phases:
           kind: Service
           metadata:
             name: $_PROJECT_NAME
+            namespace: cafeteria
             labels:
               app: $_PROJECT_NAME
           spec:
@@ -59,6 +60,7 @@ phases:
           kind: Deployment
           metadata:
             name: $_PROJECT_NAME
+            namespace: cafeteria
             labels:
               app: $_PROJECT_NAME
           spec:
@@ -92,7 +94,7 @@ phases:
                       timeoutSeconds: 2
                       periodSeconds: 5
                       failureThreshold: 5
-          EOF 
+          EOF
 cache:
   paths:
-    - '/root/.m2/**/*' 
+    - '/root/.m2/**/*'
