@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: order
-        image: beatific/order:v6
+        image: jsy6450/order:v1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
